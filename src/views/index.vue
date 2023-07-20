@@ -1,5 +1,7 @@
 <template>
   <div class="bg-light">
+    <h1>contact = 03139265304</h1>
+    <h3>Address = Location will coming soon</h3>
     <base-block
       header="Registered Cars"
       :columns="columns"

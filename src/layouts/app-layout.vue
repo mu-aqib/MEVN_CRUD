@@ -5,12 +5,12 @@
 
     <b-row>
       <!--  SIDEBAR  -->
-      <b-col cols="2">
+      <!-- <b-col cols="2">
         <Sidebar></Sidebar>
-      </b-col>
+      </b-col> -->
 
       <!--  MAIN CONTENT  -->
-      <b-col cols="10">
+      <b-col cols="10" class="mx-auto">
         <b-container class="p-5">
           <router-view></router-view>
         </b-container>

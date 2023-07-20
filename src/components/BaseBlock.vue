@@ -3,7 +3,33 @@
     <v-client-table :data="data" :columns="columns" :options="table_option">
       <template #actions="props">
         <div class="actions text-center">
-          <a href="javascript:;" class="cancel" @click="delete_row(props.row)">
+          <a
+            href="javascript:;"
+            class="text-secondary"
+            @click="delete_row(props.row)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-edit-2"
+            >
+              <path
+                d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"
+              ></path>
+            </svg>
+          </a>
+          <a
+            href="javascript:;"
+            class="text-danger"
+            @click="delete_row(props.row)"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -182,8 +208,5 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

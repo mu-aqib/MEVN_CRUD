@@ -1,6 +1,7 @@
 {
-  "name": "hello-world",
+  "name": "mevn-crud",
   "version": "0.1.0",
+  "description": "MEVN CRUD application",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

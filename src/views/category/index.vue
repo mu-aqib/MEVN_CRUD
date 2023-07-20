@@ -1,7 +1,7 @@
 <template>
   <div class="bg-light">
     <base-block
-      header="Registered Cars"
+      header="Registered Categories"
       :columns="columns"
       :data="data"
     ></base-block>
@@ -22,25 +22,31 @@ export default {
           wheel: 4,
         },
         {
-          id: "1",
+          id: "2",
           name: "Sports Car",
           car_type: "Small",
           wheel: 4,
         },
         {
-          id: "1",
+          id: "3",
           name: "Sports Car",
           car_type: "Small",
           wheel: 4,
         },
         {
-          id: "1",
+          id: "4",
           name: "Sports Car",
           car_type: "Small",
           wheel: 4,
         },
         {
-          id: "1",
+          id: "5",
+          name: "Sports Car",
+          car_type: "Small",
+          wheel: 4,
+        },
+        {
+          id: "6",
           name: "Sports Car",
           car_type: "Small",
           wheel: 4,

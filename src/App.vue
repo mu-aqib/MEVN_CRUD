@@ -7,6 +7,7 @@
 <script>
 import "@/assets/sass/main.scss";
 import { mapGetters } from "vuex";
+import axios from "axios";
 // layouts
 import appLayout from "./layouts/app-layout.vue";
 import authLayout from "./layouts/auth-layout.vue";
@@ -18,7 +19,14 @@ export default {
     appLayout,
     authLayout,
   },
-
+  async mounted() {
+    try {
+      const response = await axios.get("http://localhost:3000/api/data");
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  },
   computed: {
     ...mapGetters(["getLayout"]),
   },

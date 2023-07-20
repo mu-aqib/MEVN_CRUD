@@ -1,7 +1,9 @@
 <template>
   <b-navbar type="light" variant="light" class="position-fixed left-0">
     <b-nav vertical class="align-self-start">
-      <b-nav-item active to="/">Dashboard</b-nav-item>
+      <b-nav-item active>
+        <router-link to="/" href="#"> Dashboard </router-link>
+      </b-nav-item>
       <b-nav-item active to="/category/add">Add Cat</b-nav-item>
       <b-nav-item active to="/category/list">View Cat</b-nav-item>
       <b-nav-item active to="/car/add">Add car</b-nav-item>
