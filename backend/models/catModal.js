@@ -12,6 +12,6 @@ const catSchema = mongoose.Schema(
   }
 );
 
-const Categories = mongoose.model("User", catSchema);
+const Categories = mongoose.model("Category", catSchema);
 
 export default Categories;

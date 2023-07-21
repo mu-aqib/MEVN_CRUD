@@ -1,17 +1,17 @@
 // import express async handler for managing the errors without using try/catch
 import asynHandler from "express-async-handler";
-// backend/controllers/categoryController.js
-import Categories from "../models/category";
+// Modal
+import Categories from "../models/catModal.js";
 
-// Function to create a new category
 const createCategory = asynHandler(async (req, res) => {
-  let { name } = req.body;
+  let name = req.body.name.toLowerCase();
 
   // check exisiting category
   const existingCategory = await Categories.findOne({ name });
 
   if (existingCategory) {
-    return res.status(400).json({ error: "Category already exists." });
+    res.status(400);
+    throw new Error("User already exists");
   }
 
   //   add category to DB
@@ -19,66 +19,68 @@ const createCategory = asynHandler(async (req, res) => {
     name,
   });
 
-  if (newCategory) res.status(201).json(newCategory);
-  else res.status(400).json({ error: "Category not added" });
-});
-
-// Function to get all categories
-const getAllCategories = asyncHandler(async (req, res) => {
-  // Fetch all category documents from the database
-  const categories = await Categories.find();
-  res.status(200).json(categories);
-});
-// Function to get a specific category by ID
-const getCategoryById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-
-  // Fetch the category document by its ID from the database
-  const category = await Categories.findById(id);
-
-  if (!category) {
-    return res.status(404).json({ error: "Category not found." });
+  if (newCategory) res.status(200).json(newCategory);
+  else {
+    res.status(400);
+    throw new Error("Invalid user data");
   }
-
-  res.status(200).json(category);
 });
 
-// Function to update a category by ID
-const updateCategoryById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;
+// const getAllCategories = asyncHandler(async (req, res) => {
+//   // Fetch all category documents from the database
+//   const categories = await Categories.find();
+//   res.status(200).json(categories);
+// });
+// // Function to get a specific category by ID
+// const getCategoryById = asyncHandler(async (req, res) => {
+//   const { id } = req.params;
 
-  // Find and update the category document in the database
-  const updatedCategory = await Categories.findByIdAndUpdate(id, updates, {
-    new: true,
-    runValidators: true,
-  });
+//   // Fetch the category document by its ID from the database
+//   const category = await Categories.findById(id);
 
-  if (!updatedCategory) {
-    return res.status(404).json({ error: "Category not found." });
-  }
+//   if (!category) {
+//     return res.status(404).json({ error: "Category not found." });
+//   }
 
-  res.status(200).json(updatedCategory);
-});
+//   res.status(200).json(category);
+// });
 
-// Function to delete a category by ID
-const deleteCategoryById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+// // Function to update a category by ID
+// const updateCategoryById = asyncHandler(async (req, res) => {
+//   const { id } = req.params;
+//   const updates = req.body;
 
-  // Find and delete the category document from the database
-  const deletedCategory = await Categories.findByIdAndDelete(id);
+//   // Find and update the category document in the database
+//   const updatedCategory = await Categories.findByIdAndUpdate(id, updates, {
+//     new: true,
+//     runValidators: true,
+//   });
 
-  if (!deletedCategory) {
-    return res.status(404).json({ error: "Category not found." });
-  }
+//   if (!updatedCategory) {
+//     return res.status(404).json({ error: "Category not found." });
+//   }
 
-  res.status(200).json({ message: "Category deleted successfully." });
-});
+//   res.status(200).json(updatedCategory);
+// });
+
+// // Function to delete a category by ID
+// const deleteCategoryById = asyncHandler(async (req, res) => {
+//   const { id } = req.params;
+
+//   // Find and delete the category document from the database
+//   const deletedCategory = await Categories.findByIdAndDelete(id);
+
+//   if (!deletedCategory) {
+//     return res.status(404).json({ error: "Category not found." });
+//   }
+
+//   res.status(200).json({ message: "Category deleted successfully." });
+// });
 
 export {
   createCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategoryById,
-  deleteCategoryById,
+  // getAllCategories,
+  // getCategoryById,
+  // updateCategoryById,
+  // deleteCategoryById,
 };

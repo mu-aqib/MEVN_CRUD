@@ -4,18 +4,18 @@
       <b-card class="mt-3" header="Add New Category">
         <b-form class="py-2 px-4">
           <b-form-group class="mb-3" label="Category Name" label-for="category">
-            <b-form-input placeholder="Bus" type="text" required></b-form-input>
+            <b-form-input
+              placeholder="Bus"
+              type="text"
+              class="mt-2"
+              v-model="category.name"
+              required
+            ></b-form-input>
           </b-form-group>
 
-          <b-form-group class="mb-3" label="Category Name" label-for="category">
-            <b-form-input placeholder="Bus" type="text" required></b-form-input>
-          </b-form-group>
-
-          <b-form-group class="mb-3" label="Category Name" label-for="category">
-            <b-form-input placeholder="Bus" type="text" required></b-form-input>
-          </b-form-group>
-
-          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="submit" @click.prevent="addNewCat" variant="primary"
+            >Submit</b-button
+          >
         </b-form>
       </b-card>
     </b-col>
@@ -23,10 +23,22 @@
 </template>
 
 <script>
+import store from "../../store/index.js";
 export default {
   name: "add",
   data() {
-    return {};
+    return {
+      category: {
+        name: "",
+      },
+    };
+  },
+
+  methods: {
+    async addNewCat() {
+      store.dispatch("addCategory", this.category);
+      this.category.name = "";
+    },
   },
 };
 </script>

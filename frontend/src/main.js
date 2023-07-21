@@ -4,11 +4,8 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import router from "./router";
 import store from "./store";
 import axios from "axios";
+axios.defaults.baseURL = "http://localhost:5000/";
 
-// datatables
-/* fetch('https://dummyjson.com/products/1')
-.then(res => res.json())
-.then(json => console.log(json)) */
 import { ClientTable } from "vue-tables-2";
 
 // Global Components

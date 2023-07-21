@@ -48,17 +48,27 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button
+              type="submit"
+              @click.prevent="registerUser"
+              variant="primary"
+              >Submit</b-button
+            >
           </b-form>
         </b-card>
       </b-col>
     </b-row>
+
+    <pre>
+
+      {{ form }}
+    </pre>
   </b-container>
 </template>
 
 <script>
+import store from "../../store/index";
 export default {
-  metaInfo: { title: "Auth Login|Registration" },
   data() {
     return {
       form: {
@@ -67,9 +77,14 @@ export default {
         password: "",
         confirmPAssword: "",
       },
-
-      show: true,
     };
+  },
+
+  methods: {
+    async registerUser() {
+      const result = await store.dispatch("authRegister", this.form);
+      console.log(result);
+    },
   },
 };
 </script>

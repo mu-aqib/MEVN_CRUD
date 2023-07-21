@@ -26,7 +26,9 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="submit" variant="primary">Submit</b-button>
+            <b-button type="submit" @click.prevent="loginUser" variant="primary"
+              >Submit</b-button
+            >
           </b-form>
         </b-card>
       </b-col>
@@ -34,6 +36,8 @@
   </b-container>
 </template>
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -42,6 +46,17 @@ export default {
         password: "",
       },
     };
+  },
+
+  methods: {
+    ...mapActions(["authLogin"]),
+    async loginUser() {
+      const result = await this.authLogin(this.form);
+      if (result) {
+        alert("user loggedin");
+        this.$router.push("/");
+      }
+    },
   },
 };
 </script>

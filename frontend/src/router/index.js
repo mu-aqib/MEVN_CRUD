@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "../store/index.js";
 import Login from "../views/auth/Login.vue";
 import Home from "../views/index.vue";
 
@@ -9,13 +10,15 @@ const routes = [
   // Auth routes Login|Register
   {
     path: "/auth/login",
-    name: "Login",
+    name: "login",
     component: Login,
+    meta: { layout: "auth", redirectIfAuthenticated: true },
   },
   {
     path: "/auth/register",
-    name: "Register",
+    name: "register",
     component: () => import("../views/auth/Register.vue"),
+    meta: { layout: "auth", redirectIfAuthenticated: true },
   },
 
   // Dashboard Home page
@@ -23,45 +26,44 @@ const routes = [
     path: "/",
     name: "home",
     component: Home,
+    meta: {
+      requireAuth: true,
+    },
   },
   // -------------  categories
   {
     path: "/category/add",
     name: "add_category",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/category/add.vue"),
+    component: () => import("../views/category/add.vue"),
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: "/category/list",
     name: "view_category",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/category/index.vue"),
+    component: () => import("../views/category/index.vue"),
+    meta: {
+      requireAuth: true,
+    },
   },
 
   // -------------  Cars
   {
     path: "/car/add",
     name: "add_car",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/cars/add.vue"),
+    component: () => import("../views/cars/add.vue"),
+    meta: {
+      requireAuth: true,
+    },
   },
   {
     path: "/car/list",
-    name: "add_car",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/cars/index.vue"),
+    name: "view_car",
+    component: () => import("../views/cars/index.vue"),
+    meta: {
+      requireAuth: true,
+    },
   },
 ];
 
@@ -69,6 +71,34 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+// access token
+const getUserToken = () => {
+  return localStorage.getItem("userToken") ?? "";
+};
+
+router.beforeEach((to, from, next) => {
+  // ----------  check the auth and verify the user
+  if (to.meta.requireAuth) {
+    if (getUserToken()) {
+      next();
+    } else {
+      next({ name: "login" });
+    }
+    // getUserToken() ? next() : next({ name: "login" });
+  } else if (to.meta.redirectIfAuthenticated) {
+    console.log("ehheheheh");
+    getUserToken() ? next({ name: "home" }) : next();
+  }
+
+  // ----------   changin the layout before accessing the route
+  if (to.meta && to.meta.layout && to.meta.layout == "auth") {
+    store.commit("setLayout", "authLayout");
+  } else {
+    store.commit("setLayout", "appLayout");
+  }
+  next(true);
 });
 
 export default router;
