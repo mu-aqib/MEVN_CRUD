@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
 
-const catSchema = mongoose.Schema(
+const carSchema = mongoose.Schema(
   {
-    name: {
+    carName: {
       type: String,
       required: true,
     },
-    email: {
+    carColor: {
       type: String,
       required: true,
-      unique: true,
     },
-    password: {
+    carModel: {
       type: String,
+      required: true,
+    },
+    carRegNo: {
+      type: String,
+      required: true,
+    },
+    carType: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Categories", // Referencing the Categories model
       required: true,
     },
   },
@@ -21,6 +29,6 @@ const catSchema = mongoose.Schema(
   }
 );
 
-const Categories = mongoose.model("User", catSchema);
+const Car = mongoose.model("Car", carSchema);
 
-export default Categories;
+export default Car;
