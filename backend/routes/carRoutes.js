@@ -4,21 +4,14 @@ import {
   getAllCars,
   deleteCarById,
   updateCarById,
-  // getCarById,
-  // updateCarById,
-  // deleteCarById,
 } from "../controllers/carController.js";
-// import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/add", createCar);
+router.post("/add", protect, createCar);
 router.get("/getAll", getAllCars);
-router.put("/update/:id", updateCarById);
-router.delete("/:id", deleteCarById);
-// router
-//   .route("/profile")
-//   .get(protect, getUserProfile)
-//   .put(protect, updateUserProfile);
+router.put("/update/:id", protect, updateCarById);
+router.delete("/:id", protect, deleteCarById);
 
 export default router;

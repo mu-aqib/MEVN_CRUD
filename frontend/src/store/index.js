@@ -11,6 +11,8 @@ export default new Vuex.Store({
 
     categories: undefined,
     cars: undefined,
+
+    config: undefined,
   },
   getters: {
     getLayout(state) {
@@ -58,6 +60,14 @@ export default new Vuex.Store({
       console.log(cars);
       state.cars = cars;
     },
+
+    setBearerToken(state, payload) {
+      state.config = {
+        headers: {
+          Authorization: `Bearer ${payload}`,
+        },
+      };
+    },
   },
   actions: {
     //----------------  AUTH ACTIONS --------------------//
@@ -72,6 +82,7 @@ export default new Vuex.Store({
 
         context.commit("setToken", data.token);
         context.commit("setLayout", "appLayout");
+        context.commit("setBearerToken", data.token);
         return data.token ? true : false;
       } catch (err) {
         console.log(err);
@@ -88,16 +99,30 @@ export default new Vuex.Store({
 
     logOut() {
       localStorage.removeItem("userToken");
+      this.state.config = undefined;
       return true;
+    },
+
+    updateConfig(context) {
+      if (!context.state.config)
+        context.commit("setBearerToken", localStorage.getItem("userToken"));
     },
     //----------------  CATEGORY ACTIONS --------------------//
     async addCategory(context, payload) {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/category/add",
-        {
-          ...payload,
-        }
-      );
+      try {
+        context.dispatch("updateConfig");
+        const { data } = await axios.post(
+          "http://localhost:5000/api/category/add",
+          {
+            ...payload,
+          },
+          context.state.config
+        );
+
+        return data ? true : false;
+      } catch (err) {
+        alert(err.response.data.message);
+      }
     },
 
     async fetchAllCategories(context) {
@@ -108,32 +133,45 @@ export default new Vuex.Store({
     },
 
     async updateSingleCat(context, payload) {
-      const { data } = await axios.put(
-        `http://localhost:5000/api/category/update/${payload.id}`,
-        {
-          name: payload.name,
-        }
-      );
-
-      console.log(data);
-
-      return data ? true : false;
+      try {
+        context.dispatch("updateConfig");
+        const { data } = await axios.put(
+          `http://localhost:5000/api/category/update/${payload.id}`,
+          {
+            name: payload.name,
+          },
+          context.state.config
+        );
+        return data ? true : false;
+      } catch (err) {
+        alert(err.response.data.message);
+      }
     },
 
     async deleteCategory(context, payload) {
+      context.dispatch("updateConfig");
       const del = await axios.delete(
-        `http://localhost:5000/api/category/${payload}`
+        `http://localhost:5000/api/category/${payload}`,
+        context.state.config
       );
       return del ? true : false;
     },
 
     //----------------  CAR ACTIONS --------------------//
     async addCar(context, payload) {
-      const { data } = await axios.post("http://localhost:5000/api/car/add", {
-        ...payload,
-      });
-
-      console.log(data);
+      try {
+        context.dispatch("updateConfig");
+        const { data } = await axios.post(
+          "http://localhost:5000/api/car/add",
+          {
+            ...payload,
+          },
+          context.state.config
+        );
+        console.log(data);
+      } catch (err) {
+        alert(err.response.data.message);
+      }
     },
 
     async fetchAllCars(context) {
@@ -142,25 +180,32 @@ export default new Vuex.Store({
     },
 
     async updateSingleCar(context, payload) {
-      // remove id from the pyaload
-      const { id, ...dataToSend } = payload;
-      const { data } = await axios.put(
-        `http://localhost:5000/api/car/update/${id}`,
-        {
-          ...dataToSend,
-        }
-      );
+      try {
+        context.dispatch("updateConfig");
+        // remove id from the pyaload
+        const { id, ...dataToSend } = payload;
+        const { data } = await axios.put(
+          `http://localhost:5000/api/car/update/${id}`,
+          {
+            ...dataToSend,
+          },
+          context.state.config
+        );
 
-      console.log(data);
+        console.log(data);
 
-      return data ? true : false;
+        return data ? true : false;
+      } catch (err) {
+        alert(err.response.data.message);
+      }
     },
 
     async deleteCar(context, payload) {
+      context.dispatch("updateConfig");
       const { data } = await axios.delete(
-        `http://localhost:5000/api/car/${payload}`
+        `http://localhost:5000/api/car/${payload}`,
+        context.state.config
       );
-      console.log(data);
       return data ? data.message : false;
     },
   },

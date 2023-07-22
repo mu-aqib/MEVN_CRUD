@@ -36,8 +36,9 @@ export default {
 
   methods: {
     async addNewCat() {
-      store.dispatch("addCategory", this.category);
+      const res = await store.dispatch("addCategory", this.category);
       this.category.name = "";
+      if (res) this.$router.push("/category/list");
     },
   },
 };
