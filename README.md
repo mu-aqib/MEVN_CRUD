@@ -13,20 +13,43 @@ The MEVN CRUD (Create, Read, Update, Delete) application is designed to manage c
 7)  **Dynamic Data Presentation**: Vue-tables-2 offers dynamic and interactive data table functionalities for a visually appealing user experience.
 8)  **State Management**: Vuex simplifies state management, ensuring consistent and centralized data handling across components.
 
-## Project setup
-```
-npm install
+
+## Concepts Used:
+  ### Frontend
+  ```
+1)  axios
+2)  bootstrap-vue
+3)  vue-router
+4)  vue-tables-2
+5)  vuex
+6)  vuelidate
 ```
 
-### Compiles and hot-reloads for development
+### Backend
+  ```
+1)  express
+2)  bcryptjs
+3)  cors
+4)  dotenv
+5)  express-async-handler
+6)  jsonwebtoken
+7)  mongoose
 ```
+      
+
+## Project setup
+#### frontend
+```
+npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+#### backend
 ```
-npm run build
+npm install
+npm run dev || npm start
 ```
+
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
