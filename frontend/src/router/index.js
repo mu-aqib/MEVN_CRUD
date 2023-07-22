@@ -91,7 +91,7 @@ const router = new VueRouter({
 
 // access token
 const getUserToken = () => {
-  const token = localStorage.getItem("userToken") ?? "";
+  const token = localStorage.getItem("userToken") ?? undefined;
   store.state.token = token;
   return token;
 };
@@ -106,15 +106,14 @@ router.beforeEach((to, from, next) => {
     }
     // getUserToken() ? next() : next({ name: "login" });
   } else if (to.meta.redirectIfAuthenticated) {
-    console.log("ehheheheh");
     getUserToken() ? next({ name: "home" }) : next();
   }
 
   // ----------   changin the layout before accessing the route
   if (to.meta && to.meta.layout && to.meta.layout == "auth") {
-    store.commit("setLayout", "authLayout");
+    if (!getUserToken()) store.commit("setLayout", "authLayout");
   } else {
-    store.commit("setLayout", "appLayout");
+    if (getUserToken()) store.commit("setLayout", "appLayout");
   }
   next(true);
 });

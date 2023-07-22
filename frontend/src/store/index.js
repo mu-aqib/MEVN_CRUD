@@ -86,6 +86,10 @@ export default new Vuex.Store({
       data.id ? true : false;
     },
 
+    logOut() {
+      localStorage.removeItem("userToken");
+      return true;
+    },
     //----------------  CATEGORY ACTIONS --------------------//
     async addCategory(context, payload) {
       const { data } = await axios.post(
