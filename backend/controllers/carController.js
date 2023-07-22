@@ -1,9 +1,10 @@
-// backend/controllers/carController.js
-import Car from "../models/car";
-import Categories from "../models/category";
+// import express async handler for managing the errors without using try/catch
 import asyncHandler from "express-async-handler";
+// Modal
+import Car from "../models/carModal.js";
+import Categories from "../models/catModal.js";
 
-// Function to create a new car
+// ------------ ADD NEWCAR
 const createCar = asyncHandler(async (req, res) => {
   // Destructure the car data from the request body
   const { carName, carColor, carModel, carRegNo, carType } = req.body;
@@ -11,11 +12,12 @@ const createCar = asyncHandler(async (req, res) => {
   // Check if the carType provided is a valid ObjectId
   const category = await Categories.findById(carType);
   if (!category) {
-    return res.status(404).json({ error: "Invalid carType." });
+    res.status(404);
+    throw new Error("Invalid carType");
   }
 
   // Create a new car instance with the car data
-  const newCar = new Car({
+  const newCar = await Car.create({
     carName,
     carColor,
     carModel,
@@ -23,20 +25,25 @@ const createCar = asyncHandler(async (req, res) => {
     carType: carType,
   });
 
-  // Save the new car document to the database
-  await newCar.save();
-
-  res.status(201).json(newCar);
+  if (newCar) res.status(200).json(newCar);
+  else {
+    res.status(400);
+    throw new Error("Invalid user data");
+  }
 });
 
-// Function to get all cars
+// -----------  GET ALLCARS
 const getAllCars = asyncHandler(async (req, res) => {
-  // Fetch all car documents from the database
-  const cars = await Car.find();
-  res.status(200).json(cars);
+  try {
+    const cars = await Car.find().populate("carType");
+
+    res.status(200).json(cars);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get cars." });
+  }
 });
 
-// Function to get a specific car by ID
+// ---------  GET CAR_BY_ID
 const getCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
@@ -44,18 +51,18 @@ const getCarById = asyncHandler(async (req, res) => {
   const car = await Car.findById(id);
 
   if (!car) {
-    return res.status(404).json({ error: "Car not found." });
+    return res.status(500).json({ error: "Car not found." });
   }
 
   res.status(200).json(car);
 });
 
-// Function to update a car by ID
+// ---------  UPDATE CAR_BY_ID
 const updateCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
-  // Check if the carType provided is a valid ObjectId
+  // -------- VALIDATION OF CARTYPE :: CATEGORY
   if (updates.carType) {
     const category = await Categories.findById(updates.carType);
     if (!category) {
@@ -76,7 +83,7 @@ const updateCarById = asyncHandler(async (req, res) => {
   res.status(200).json(updatedCar);
 });
 
-// Function to delete a car by ID
+// ---------- DELETE CAR_BY_ID
 const deleteCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 

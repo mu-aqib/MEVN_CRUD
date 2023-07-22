@@ -1,58 +1,47 @@
 <template>
   <div class="bg-light">
     <base-block
+      v-if="getAllCategories"
       header="Registered Categories"
       :columns="columns"
-      :data="data"
+      :data="getAllCategories"
+      @delRow="delCat"
     ></base-block>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "add",
   data() {
     return {
-      columns: ["id", "name", "car_type", "wheel"],
-      data: [
-        {
-          id: "1",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "2",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "3",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "4",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "5",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "6",
-          name: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-      ],
+      columns: ["id", "name", "actions"],
     };
+  },
+
+  computed: {
+    ...mapGetters(["getAllCategories"]),
+  },
+
+  mounted() {
+    // Call the fetchAllCategories action here using mapActions
+    this.fetchAllCategories();
+  },
+
+  methods: {
+    ...mapActions(["fetchAllCategories", "deleteCategory"]),
+    async delCat(id) {
+      await this.deleteCategory(id);
+      // Refresh the categories after deletion
+      this.fetchAllCategories();
+    },
+
+    async delCat(id) {
+      await this.deleteCategory(id);
+      // Refresh the categories after deletion
+      // this.fetchAllCategories();
+    },
   },
 };
 </script>

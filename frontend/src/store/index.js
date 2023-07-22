@@ -8,6 +8,9 @@ export default new Vuex.Store({
   state: {
     layout: "authLayout",
     token: undefined,
+
+    categories: undefined,
+    cars: undefined,
   },
   getters: {
     getLayout(state) {
@@ -16,6 +19,14 @@ export default new Vuex.Store({
 
     getUserToken(state) {
       return state.token;
+    },
+
+    getAllCategories(state) {
+      return state.categories;
+    },
+
+    getAllCars(state) {
+      return state.cars;
     },
   },
   mutations: {
@@ -26,6 +37,26 @@ export default new Vuex.Store({
     setToken(state, payload) {
       localStorage.setItem("userToken", payload);
       state.token = payload;
+    },
+
+    setCategories(state, payload) {
+      state.categories = payload;
+    },
+
+    setCars(state, payload) {
+      const cars = payload.map((car, i) => {
+        return {
+          No: i,
+          id: car._id,
+          car_name: car.carName,
+          car_type: car.carType.name,
+          car_color: car.carColor,
+          car_model: car.carModel,
+          reg_no: car.carRegNo,
+        };
+      });
+      console.log(cars);
+      state.cars = cars;
     },
   },
   actions: {
@@ -54,7 +85,6 @@ export default new Vuex.Store({
 
       data.id ? true : false;
     },
-    //----------------  ENDAUTH ACTIONS --------------------//
 
     //----------------  CATEGORY ACTIONS --------------------//
     async addCategory(context, payload) {
@@ -64,6 +94,50 @@ export default new Vuex.Store({
           ...payload,
         }
       );
+    },
+
+    async fetchAllCategories(context) {
+      const { data } = await axios.get(
+        "http://localhost:5000/api/category/getAll"
+      );
+      context.commit("setCategories", data);
+    },
+
+    async updateSingleCat(context, payload) {
+      const { data } = await axios.put(
+        `http://localhost:5000/api/category/update/${payload.id}`,
+        {
+          name: payload.name,
+        }
+      );
+
+      console.log(data);
+
+      return data ? true : false;
+    },
+
+    async deleteCategory(context, payload) {
+      console.log(payload);
+      // const { data } = await axios.delete(
+      //   "http://localhost:5000/api/category/add",
+      //   {
+      //     ...payload,
+      //   }
+      // );
+    },
+
+    //----------------  CAR ACTIONS --------------------//
+    async addCar(context, payload) {
+      const { data } = await axios.post("http://localhost:5000/api/car/add", {
+        ...payload,
+      });
+
+      console.log(data);
+    },
+
+    async fetchAllCars(context) {
+      const { data } = await axios.get("http://localhost:5000/api/car/getAll");
+      context.commit("setCars", data);
     },
   },
 });

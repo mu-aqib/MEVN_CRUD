@@ -1,9 +1,9 @@
 // import express async handler for managing the errors without using try/catch
-import asynHandler from "express-async-handler";
+import asyncHandler from "express-async-handler";
 // Modal
 import Categories from "../models/catModal.js";
 
-const createCategory = asynHandler(async (req, res) => {
+const createCategory = asyncHandler(async (req, res) => {
   let name = req.body.name.toLowerCase();
 
   // check exisiting category
@@ -11,7 +11,7 @@ const createCategory = asynHandler(async (req, res) => {
 
   if (existingCategory) {
     res.status(400);
-    throw new Error("User already exists");
+    throw new Error("Category already available");
   }
 
   //   add category to DB
@@ -26,42 +26,43 @@ const createCategory = asynHandler(async (req, res) => {
   }
 });
 
-// const getAllCategories = asyncHandler(async (req, res) => {
-//   // Fetch all category documents from the database
-//   const categories = await Categories.find();
-//   res.status(200).json(categories);
-// });
-// // Function to get a specific category by ID
-// const getCategoryById = asyncHandler(async (req, res) => {
-//   const { id } = req.params;
+const getAllCategories = asyncHandler(async (req, res) => {
+  // Fetch all category documents from the database
+  const categories = await Categories.find();
+  const array = categories.map((item) => {
+    return {
+      id: item._id,
+      name: item.name,
+    };
+  });
+  res.status(200).json(array);
+});
 
-//   // Fetch the category document by its ID from the database
-//   const category = await Categories.findById(id);
+// ----------   UPDATE SINGLE_CATEGORY
+const updateSingleCat = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
 
-//   if (!category) {
-//     return res.status(404).json({ error: "Category not found." });
-//   }
+    // Find the category by ID and update its name
+    const updatedCategory = await Categories.findByIdAndUpdate(
+      id,
+      { name },
+      { new: true } // Setting { new: true } returns the updated category instead of the old one
+    );
 
-//   res.status(200).json(category);
-// });
-
-// // Function to update a category by ID
-// const updateCategoryById = asyncHandler(async (req, res) => {
-//   const { id } = req.params;
-//   const updates = req.body;
-
-//   // Find and update the category document in the database
-//   const updatedCategory = await Categories.findByIdAndUpdate(id, updates, {
-//     new: true,
-//     runValidators: true,
-//   });
-
-//   if (!updatedCategory) {
-//     return res.status(404).json({ error: "Category not found." });
-//   }
-
-//   res.status(200).json(updatedCategory);
-// });
+    if (!updatedCategory) {
+      res.status(404);
+      throw new Error("Category not found");
+    }
+    console.log(updatedCategory);
+    // Return the updated category in the response
+    return res.status(200).json(updatedCategory);
+  } catch (error) {
+    res.status(500);
+    throw new Error("Internal server error : " + error);
+  }
+});
 
 // // Function to delete a category by ID
 // const deleteCategoryById = asyncHandler(async (req, res) => {
@@ -79,7 +80,8 @@ const createCategory = asynHandler(async (req, res) => {
 
 export {
   createCategory,
-  // getAllCategories,
+  getAllCategories,
+  updateSingleCat,
   // getCategoryById,
   // updateCategoryById,
   // deleteCategoryById,

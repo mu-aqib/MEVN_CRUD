@@ -7,7 +7,7 @@
 <script>
 import "@/assets/sass/main.scss";
 import { mapGetters } from "vuex";
-import axios from "axios";
+
 // layouts
 import appLayout from "./layouts/app-layout.vue";
 import authLayout from "./layouts/auth-layout.vue";

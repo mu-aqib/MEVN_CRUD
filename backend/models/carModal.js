@@ -16,12 +16,11 @@ const carSchema = mongoose.Schema(
     },
     carRegNo: {
       type: String,
-      required: true,
+      trim: true,
     },
     carType: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Categories", // Referencing the Categories model
-      required: true,
     },
   },
   {

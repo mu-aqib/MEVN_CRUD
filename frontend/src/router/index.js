@@ -47,6 +47,14 @@ const routes = [
       requireAuth: true,
     },
   },
+  {
+    path: "/category/edit/:id",
+    name: "edit_category",
+    component: () => import("../views/category/edit.vue"),
+    meta: {
+      requireAuth: true,
+    },
+  },
 
   // -------------  Cars
   {
@@ -75,7 +83,9 @@ const router = new VueRouter({
 
 // access token
 const getUserToken = () => {
-  return localStorage.getItem("userToken") ?? "";
+  const token = localStorage.getItem("userToken") ?? "";
+  store.state.token = token;
+  return token;
 };
 
 router.beforeEach((to, from, next) => {

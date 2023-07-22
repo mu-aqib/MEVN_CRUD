@@ -1,5 +1,9 @@
 import express from "express";
-import { createCategory } from "../controllers/catController.js";
+import {
+  createCategory,
+  getAllCategories,
+  updateSingleCat,
+} from "../controllers/catController.js";
 // import { registerUser, loginUser } from "../controllers/userController.js";
 // import { protect } from "../middleware/authMiddleware.js";
 
@@ -8,7 +12,8 @@ import { createCategory } from "../controllers/catController.js";
 const router = express.Router();
 
 router.post("/add", createCategory);
-// router.get("/getAll", getAllCategories);
+router.get("/getAll", getAllCategories);
+router.put("/update/:id", updateSingleCat);
 // router
 //   .route("/profile")
 //   .get(protect, getUserProfile)

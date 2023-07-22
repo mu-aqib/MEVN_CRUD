@@ -8,7 +8,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 // backend routes
 import userRoutes from "./routes/userRoutes.js";
 import catRoutes from "./routes/catRoutes.js";
-// import carRoutes from "./routes/carRoutes.js";
+import carRoutes from "./routes/carRoutes.js";
 
 const PORT = process.env.PORT || 5000; // Use any available port for the backend server
 connectDB();
@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // api
 app.use("/api/users", userRoutes);
 app.use("/api/category", catRoutes);
-// app.use("/api/car", carRoutes);
+app.use("/api/car", carRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
