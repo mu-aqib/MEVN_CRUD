@@ -144,10 +144,9 @@ export default {
     // addCar method
     async addNewCar() {
       const result = await this.v$.$validate();
-      if (!result) {
-        // notify user form is invalid
-        return;
-      }
+      // notify user form is invalid
+      if (!result) return;
+
       store.dispatch("addCar", this.form);
       this.resetForm();
     },

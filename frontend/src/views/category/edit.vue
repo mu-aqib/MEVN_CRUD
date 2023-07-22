@@ -69,7 +69,6 @@ export default {
         (singleCat) => singleCat.id === id
       );
 
-      console.log(data);
       this.category.name = data[0].name;
     },
 

@@ -57,7 +57,6 @@ export default new Vuex.Store({
           reg_no: car.carRegNo,
         };
       });
-      console.log(cars);
       state.cars = cars;
     },
 
@@ -168,7 +167,6 @@ export default new Vuex.Store({
           },
           context.state.config
         );
-        console.log(data);
       } catch (err) {
         alert(err.response.data.message);
       }
@@ -191,8 +189,6 @@ export default new Vuex.Store({
           },
           context.state.config
         );
-
-        console.log(data);
 
         return data ? true : false;
       } catch (err) {
