@@ -46,6 +46,10 @@
           </a>
         </div>
       </template>
+
+      <template #car_type="props">
+        <span> {{ props.row.car_type.name }} </span>
+      </template>
     </v-client-table>
   </b-card>
 </template>

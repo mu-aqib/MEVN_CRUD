@@ -38,13 +38,6 @@ export default {
     };
   },
 
-  // Call the fetchAllCategories action before the component is created
-  // beforeRouteEnter(to, from, next) {
-  //   next((vm) => {
-  //     vm.fetchAllCategories();
-  //   });
-  // },
-
   created() {
     // Access the "id" parameter from the URL using this.$route.params.id
     const categoryId = this.$route.params.id;

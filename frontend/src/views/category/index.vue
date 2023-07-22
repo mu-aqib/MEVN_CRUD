@@ -31,11 +31,6 @@ export default {
 
   methods: {
     ...mapActions(["fetchAllCategories", "deleteCategory"]),
-    async delCat(id) {
-      await this.deleteCategory(id);
-      // Refresh the categories after deletion
-      this.fetchAllCategories();
-    },
 
     async delCat(id) {
       const result = await this.deleteCategory(id);

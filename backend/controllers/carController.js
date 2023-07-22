@@ -62,7 +62,7 @@ const updateCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
-  // -------- VALIDATION OF CARTYPE :: CATEGORY
+  // -------- VALIDATION OF CARTYPE :: CATEGORY BEFORE UPDATING
   if (updates.carType) {
     const category = await Categories.findById(updates.carType);
     if (!category) {
@@ -88,13 +88,13 @@ const deleteCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   // Find and delete the car document from the database
-  const deletedCar = await Car.findByIdAndDelete(id);
+  const del = await Car.findByIdAndDelete(id);
 
-  if (!deletedCar) {
-    return res.status(404).json({ error: "Car not found." });
+  if (del) res.status(200).json({ message: "Car deleted successfully" });
+  else {
+    res.status(404);
+    throw new Error("Car not deleted ");
   }
-
-  res.status(200).json({ message: "Car deleted successfully." });
 });
 
 export { createCar, deleteCarById, updateCarById, getAllCars, getCarById };

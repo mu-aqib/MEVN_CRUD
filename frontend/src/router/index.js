@@ -73,6 +73,14 @@ const routes = [
       requireAuth: true,
     },
   },
+  {
+    path: "/car/edit/:id",
+    name: "edit_car",
+    component: () => import("../views/cars/edit.vue"),
+    meta: {
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = new VueRouter({

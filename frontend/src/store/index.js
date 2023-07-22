@@ -49,7 +49,7 @@ export default new Vuex.Store({
           No: i,
           id: car._id,
           car_name: car.carName,
-          car_type: car.carType.name,
+          car_type: car.carType,
           car_color: car.carColor,
           car_model: car.carModel,
           reg_no: car.carRegNo,
@@ -135,6 +135,29 @@ export default new Vuex.Store({
     async fetchAllCars(context) {
       const { data } = await axios.get("http://localhost:5000/api/car/getAll");
       context.commit("setCars", data);
+    },
+
+    async updateSingleCar(context, payload) {
+      // remove id from the pyaload
+      const { id, ...dataToSend } = payload;
+      const { data } = await axios.put(
+        `http://localhost:5000/api/car/update/${id}`,
+        {
+          ...dataToSend,
+        }
+      );
+
+      console.log(data);
+
+      return data ? true : false;
+    },
+
+    async deleteCar(context, payload) {
+      const { data } = await axios.delete(
+        `http://localhost:5000/api/car/${payload}`
+      );
+      console.log(data);
+      return data ? data.message : false;
     },
   },
 });

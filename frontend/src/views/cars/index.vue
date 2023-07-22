@@ -5,6 +5,7 @@
       header="Registered Cars"
       :columns="columns"
       :data="getAllCars"
+      @delRow="delCar"
     ></base-block>
   </div>
 </template>
@@ -16,45 +17,13 @@ export default {
   data() {
     return {
       columns: [
-        "id",
+        "No",
         "car_name",
         "car_type",
         "car_color",
         "car_model",
         "reg_no",
         "actions",
-      ],
-      data: [
-        {
-          id: "1",
-          carName: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "1",
-          carName: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "1",
-          carName: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "1",
-          carName: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
-        {
-          id: "1",
-          carName: "Sports Car",
-          car_type: "Small",
-          wheel: 4,
-        },
       ],
     };
   },
@@ -71,9 +40,11 @@ export default {
   methods: {
     ...mapActions(["fetchAllCars", "deleteCar"]),
     async delCar(id) {
-      await this.deleteCategory(id);
-      // Refresh the categories after deletion
-      this.fetchAllCategories();
+      const result = await this.deleteCar(id);
+      if (result) {
+        alert(result);
+        this.fetchAllCars();
+      }
     },
   },
 };
