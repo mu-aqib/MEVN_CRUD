@@ -1,6 +1,6 @@
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import cors from "cors"; //used for cross browser origin issue
+import dotenv from "dotenv"; // used for accessing .env values
 dotenv.config();
 import connectDB from "./config/db.js";
 // error middleware
@@ -15,6 +15,7 @@ connectDB();
 const app = express();
 
 app.use(cors());
+// For URL-encoded and parsing JSON data in the request body.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

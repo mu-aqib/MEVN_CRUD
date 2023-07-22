@@ -73,7 +73,6 @@ export default {
           filterPlaceholder: "Search...",
           limit: "Results:",
         },
-        sortable: ["name", "position", "office", "age", "start_date", "salary"],
         sortIcon: {
           base: "sort-icon-none",
           up: "sort-icon-asc",

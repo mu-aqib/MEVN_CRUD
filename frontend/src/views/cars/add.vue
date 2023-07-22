@@ -98,6 +98,19 @@ import store from "../../store/index";
 export default {
   name: "addCar",
   setup: () => ({ v$: useVuelidate() }),
+
+  validations() {
+    return {
+      form: {
+        carName: { required }, // Car Name is required
+        carColor: { required }, // Car Color is required
+        carModel: { required }, // Car Model is required
+        carRegNo: { required }, // Car Registration No is required
+        carType: { required }, // Car Type is required and must be numeric
+      },
+    };
+  },
+
   data() {
     return {
       form: {
@@ -109,18 +122,6 @@ export default {
       },
 
       options: [{ value: null, text: "-- Please select an option --" }],
-    };
-  },
-
-  validations() {
-    return {
-      form: {
-        carName: { required }, // Car Name is required
-        carColor: { required }, // Car Color is required
-        carModel: { required }, // Car Model is required
-        carRegNo: { required }, // Car Registration No is required
-        carType: { required }, // Car Type is required and must be numeric
-      },
     };
   },
 
@@ -147,18 +148,11 @@ export default {
       // notify user form is invalid
       if (!result) return;
 
-      store.dispatch("addCar", this.form);
-      this.resetForm();
-    },
-
-    resetForm() {
-      this.form = {
-        carName: "",
-        carColor: "",
-        carModel: "",
-        carRegNo: "",
-        carType: null,
-      };
+      const res = await store.dispatch("addCar", this.form);
+      if (res) {
+        alert("data added");
+        this.$router.push("/car/list");
+      }
     },
   },
 };

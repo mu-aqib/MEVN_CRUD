@@ -167,6 +167,7 @@ export default new Vuex.Store({
           },
           context.state.config
         );
+        if (data) return true;
       } catch (err) {
         alert(err.response.data.message);
       }

@@ -1,3 +1,4 @@
+// Generate token from userID
 import jwt from "jsonwebtoken";
 
 const generateToken = (res, id) => {

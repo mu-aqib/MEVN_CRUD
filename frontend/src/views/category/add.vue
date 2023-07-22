@@ -57,7 +57,6 @@ export default {
       const result = await this.v$.$validate();
       if (!result) return;
       const res = await store.dispatch("addCategory", this.category);
-      this.category.name = "";
       if (res) this.$router.push("/category/list");
     },
   },
