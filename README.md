@@ -34,8 +34,11 @@ The MEVN CRUD (Create, Read, Update, Delete) application is designed to manage c
 5)  express-async-handler
 6)  jsonwebtoken
 7)  mongoose
-```
-      
+```      
+# Folder Structure
+
+<img width="265" alt="Screenshot 2023-07-22 at 9 32 04 PM" src="https://github.com/mu-aqib/MEVN_CRUD/assets/60979323/0d4e6cda-fb9d-40c7-a42b-2b63e8c50092">
+
 
 ## Project setup
 #### frontend
@@ -49,7 +52,6 @@ npm run serve
 npm install
 npm run dev || npm start
 ```
-
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
