@@ -1,12 +1,13 @@
-// import express async handler for managing the errors without using try/catch
+// express-async-handler is error handling middleware
 import asyncHandler from "express-async-handler";
 // Modal
 import Categories from "../models/catModal.js";
 
+// ------------ ADD NEW CATEGORY  ------------------  //
 const createCategory = asyncHandler(async (req, res) => {
   let name = req.body.name.toLowerCase();
 
-  // check exisiting category
+  // Checking Duplicate
   const existingCategory = await Categories.findOne({ name });
 
   if (existingCategory) {
@@ -26,8 +27,8 @@ const createCategory = asyncHandler(async (req, res) => {
   }
 });
 
+// ------------ GET ALL CATEGORIES  ------------------  //
 const getAllCategories = asyncHandler(async (req, res) => {
-  // Fetch all category documents from the database
   const categories = await Categories.find();
   const array = categories.map((item) => {
     return {
@@ -38,31 +39,27 @@ const getAllCategories = asyncHandler(async (req, res) => {
   res.status(200).json(array);
 });
 
-// ----------   UPDATE SINGLE_CATEGORY
+// ----------   UPDATE SINGLE_CATEGORY  --------------  //
 const updateSingleCat = asyncHandler(async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name } = req.body;
+  const { id } = req.params;
+  const { name } = req.body;
 
-    // Find the category by ID and update its name
-    const updatedCategory = await Categories.findByIdAndUpdate(
-      id,
-      { name },
-      { new: true } // Setting { new: true } returns the updated category instead of the old one
-    );
+  // Find the category by ID and update its name
+  const updatedCategory = await Categories.findByIdAndUpdate(
+    id,
+    { name },
+    { new: true } // Setting { new: true } returns the updated category instead of the old one
+  );
 
-    if (!updatedCategory) {
-      res.status(404);
-      throw new Error("Category not found");
-    }
-
+  if (updatedCategory) {
     return res.status(200).json(updatedCategory);
-  } catch (error) {
-    res.status(500);
-    throw new Error("Internal server error : " + error);
+  } else {
+    res.status(404);
+    throw new Error("Category not Updated");
   }
 });
 
+// ----------   DELETE SINGLE_CATEGORY  --------------  //
 const deleteCategoryById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 

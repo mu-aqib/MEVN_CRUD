@@ -7,6 +7,7 @@
       :data="getAllCars"
       @delRow="delCar"
     ></base-block>
+    <h3 v-else>No Record Added Please add new car</h3>
   </div>
 </template>
 

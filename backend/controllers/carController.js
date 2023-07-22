@@ -1,22 +1,21 @@
-// import express async handler for managing the errors without using try/catch
+// express-async-handler is error handling middleware
 import asyncHandler from "express-async-handler";
 // Modal
 import Car from "../models/carModal.js";
 import Categories from "../models/catModal.js";
 
-// ------------ ADD NEWCAR
+// ------------ ADD NEWCAR  ------------------  //
 const createCar = asyncHandler(async (req, res) => {
-  // Destructure the car data from the request body
   const { carName, carColor, carModel, carRegNo, carType } = req.body;
 
-  // Check if the carType provided is a valid ObjectId
+  // validate category
   const category = await Categories.findById(carType);
   if (!category) {
     res.status(404);
     throw new Error("Invalid carType");
   }
 
-  // Create a new car instance with the car data
+  // Add document in DB
   const newCar = await Car.create({
     carName,
     carColor,
@@ -32,22 +31,18 @@ const createCar = asyncHandler(async (req, res) => {
   }
 });
 
-// -----------  GET ALLCARS
+// -----------  GET ALLCARS   ------------------ //
 const getAllCars = asyncHandler(async (req, res) => {
-  try {
-    const cars = await Car.find().populate("carType");
-
-    res.status(200).json(cars);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to get cars." });
-  }
+  const cars = await Car.find().populate("carType");
+  if (cars) res.status(200).json(cars);
+  else res.status(500).json({ error: "Failed to get cars." });
 });
 
-// ---------  GET CAR_BY_ID
+// ---------  GET CAR_BY_ID  --------------------  //
 const getCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // Fetch the car document by its ID from the database
+  // fetch singleCar
   const car = await Car.findById(id);
 
   if (!car) {
@@ -57,12 +52,12 @@ const getCarById = asyncHandler(async (req, res) => {
   res.status(200).json(car);
 });
 
-// ---------  UPDATE CAR_BY_ID
+// ---------  UPDATE CAR_BY_ID   --------------------  //
 const updateCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
-  // -------- VALIDATION OF CARTYPE :: CATEGORY BEFORE UPDATING
+  // -------- Validate category before updating Car
   if (updates.carType) {
     const category = await Categories.findById(updates.carType);
     if (!category) {
@@ -70,7 +65,7 @@ const updateCarById = asyncHandler(async (req, res) => {
     }
   }
 
-  // Find and update the car document in the database
+  // update car by ID
   const updatedCar = await Car.findByIdAndUpdate(id, updates, {
     new: true,
     runValidators: true,
@@ -83,11 +78,11 @@ const updateCarById = asyncHandler(async (req, res) => {
   res.status(200).json(updatedCar);
 });
 
-// ---------- DELETE CAR_BY_ID
+// ---------- DELETE CAR_BY_ID   --------------------  //
 const deleteCarById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // Find and delete the car document from the database
+  // Delte car by ID
   const del = await Car.findByIdAndDelete(id);
 
   if (del) res.status(200).json({ message: "Car deleted successfully" });

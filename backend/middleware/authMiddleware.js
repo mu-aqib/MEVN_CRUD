@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/userModal.js";
 
+// Middleware for vaidating the token and user
 const protect = asyncHandler(async (req, res, next) => {
   if (
     req.headers.authorization &&
