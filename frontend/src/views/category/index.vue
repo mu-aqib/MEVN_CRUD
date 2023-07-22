@@ -38,9 +38,11 @@ export default {
     },
 
     async delCat(id) {
-      await this.deleteCategory(id);
-      // Refresh the categories after deletion
-      // this.fetchAllCategories();
+      const result = await this.deleteCategory(id);
+      if (result) {
+        alert("Category deleted !");
+        this.fetchAllCategories();
+      }
     },
   },
 };

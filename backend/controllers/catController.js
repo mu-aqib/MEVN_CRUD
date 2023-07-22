@@ -55,8 +55,7 @@ const updateSingleCat = asyncHandler(async (req, res) => {
       res.status(404);
       throw new Error("Category not found");
     }
-    console.log(updatedCategory);
-    // Return the updated category in the response
+
     return res.status(200).json(updatedCategory);
   } catch (error) {
     res.status(500);
@@ -64,25 +63,20 @@ const updateSingleCat = asyncHandler(async (req, res) => {
   }
 });
 
-// // Function to delete a category by ID
-// const deleteCategoryById = asyncHandler(async (req, res) => {
-//   const { id } = req.params;
+const deleteCategoryById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-//   // Find and delete the category document from the database
-//   const deletedCategory = await Categories.findByIdAndDelete(id);
-
-//   if (!deletedCategory) {
-//     return res.status(404).json({ error: "Category not found." });
-//   }
-
-//   res.status(200).json({ message: "Category deleted successfully." });
-// });
+  const del = await Categories.findByIdAndDelete(id);
+  if (del) res.status(200).json({ message: "Category deleted successfully" });
+  else {
+    res.status(404);
+    throw new Error("Category not deleted ");
+  }
+});
 
 export {
   createCategory,
   getAllCategories,
   updateSingleCat,
-  // getCategoryById,
-  // updateCategoryById,
-  // deleteCategoryById,
+  deleteCategoryById,
 };

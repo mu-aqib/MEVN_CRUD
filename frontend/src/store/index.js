@@ -117,13 +117,10 @@ export default new Vuex.Store({
     },
 
     async deleteCategory(context, payload) {
-      console.log(payload);
-      // const { data } = await axios.delete(
-      //   "http://localhost:5000/api/category/add",
-      //   {
-      //     ...payload,
-      //   }
-      // );
+      const del = await axios.delete(
+        `http://localhost:5000/api/category/${payload}`
+      );
+      return del ? true : false;
     },
 
     //----------------  CAR ACTIONS --------------------//
