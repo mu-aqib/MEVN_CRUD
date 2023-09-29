@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // api
 app.use("/api/users", userRoutes);
-app.use("/api/category", catRoutes);
+app.use("/api/category", catRoutes);  
 app.use("/api/car", carRoutes);
 app.use(notFound);
 app.use(errorHandler);
