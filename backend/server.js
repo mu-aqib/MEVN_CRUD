@@ -19,9 +19,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// api
+// api for different category routes.
 app.use("/api/users", userRoutes);
-app.use("/api/category", catRoutes);  
+app.use("/api/category", catRoutes);
 app.use("/api/car", carRoutes);
 app.use(notFound);
 app.use(errorHandler);
